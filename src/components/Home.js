@@ -4,9 +4,7 @@ import { useLanguage } from '../translations';
 
 const Home = () => {
   const [tilesVisible, setTilesVisible] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
   const { t } = useLanguage();
 
@@ -21,13 +19,7 @@ const Home = () => {
   useEffect(() => {
     const handleVideoLoad = () => {
       console.log('Video caricato:', videoSrc);
-      setVideoLoaded(true);
       setVideoError(false);
-    };
-
-    const handleVideoPlay = () => {
-      console.log('Video in riproduzione:', videoSrc);
-      setIsPlaying(true);
     };
 
     const handleVideoError = (e) => {
@@ -38,12 +30,10 @@ const Home = () => {
     const video = videoRef.current;
     if (video) {
       video.addEventListener('loadeddata', handleVideoLoad);
-      video.addEventListener('play', handleVideoPlay);
       video.addEventListener('error', handleVideoError);
       
       return () => {
         video.removeEventListener('loadeddata', handleVideoLoad);
-        video.removeEventListener('play', handleVideoPlay);
         video.removeEventListener('error', handleVideoError);
       };
     }
@@ -80,8 +70,6 @@ const Home = () => {
           playsInline
           loop={true}
           className={`w-full h-full object-cover ${videoError ? 'hidden' : ''}`}
-          onLoadedData={() => setVideoLoaded(true)}
-          onPlay={() => setIsPlaying(true)}
           onError={(e) => {
             console.error('Errore video:', e);
             setVideoError(true);

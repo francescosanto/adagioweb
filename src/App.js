@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { LanguageProvider } from './translations';
 import Header from './components/Header';
 import Home from './components/Home';

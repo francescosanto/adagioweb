@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ChevronDown, Globe } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 
 // Lista completa dei paesi con prefissi telefonici e bandiere (emoji)
 const countries = [

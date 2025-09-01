@@ -1,9 +1,7 @@
 // Configurazione e servizi per Google Places API
-import axios from 'axios';
 
 // Configurazione per Google Places API
 const GOOGLE_PLACES_API_KEY = process.env.REACT_APP_GOOGLE_PLACES_API_KEY;
-const PLACE_ID = 'ChIJvfLE8RVrEg0RdJn5qwLZafk'; // Place ID di Adagio Sevilla
 
 // Debug: stampa le variabili d'ambiente
 console.log('🔧 DEBUG - Variabili d\'ambiente:');
@@ -81,21 +79,7 @@ export const getGoogleReviews = async () => {
   }
 };
 
-// Funzione per formattare la data esatta
-const formatExactDate = (timestamp) => {
-  if (!timestamp) return 'Data non disponibile';
-  
-  const date = new Date(timestamp * 1000);
-  
-  // Formato italiano: "15 marzo 2024"
-  const options = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  };
-  
-  return date.toLocaleDateString('it-IT', options);
-};
+
 
 // Recensioni di fallback rimosse - ora il sistema mostra solo recensioni reali
 

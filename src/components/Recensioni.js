@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote, MapPin, Globe } from 'lucide-react';
+import { Star, Globe } from 'lucide-react';
 import { useReviews } from '../hooks/useReviews';
 import ReviewsCarousel from './ReviewsCarousel';
 import { useLanguage } from '../translations';
@@ -8,11 +8,9 @@ import { useLanguage } from '../translations';
 const Recensioni = () => {
   const { 
     googleReviews, 
-    googleRating, 
     overallRating, 
     loading, 
-    error, 
-    refreshReviews 
+    error
   } = useReviews();
   const { t } = useLanguage();
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, User, Phone, Mail, ChevronLeft, ChevronRight, RefreshCw, Wifi, WifiOff, Server, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, ChevronLeft, ChevronRight, RefreshCw, WifiOff, Server, CheckCircle, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { useBookings } from '../hooks/useBookings';
@@ -45,9 +45,6 @@ const Prenotazioni = () => {
   };
 
   const {
-    currentMonth,
-    bookings,
-    availability,
     loading,
     error,
     connectionStatus,
@@ -239,7 +236,7 @@ const Prenotazioni = () => {
     // Gestione speciale per il campo telefono
     if (name === 'phone') {
       // Permette solo numeri, spazi, +, -, (, ) e .
-      const cleaned = value.replace(/[^\d\s\+\-\(\)\.]/g, '');
+      const cleaned = value.replace(/[^\d\s+\-().]/g, '');
       setFormData(prev => ({
         ...prev,
         [name]: cleaned
@@ -253,9 +250,9 @@ const Prenotazioni = () => {
   };
 
   // Funzione per nascondere le notifiche
-  const hideNotification = () => {
+  const hideNotification = useCallback(() => {
     setNotification({ message: '', type: '', show: false });
-  };
+  }, []);
 
   // Nasconde automaticamente le notifiche di successo dopo 5 secondi
   useEffect(() => {
@@ -608,7 +605,7 @@ const Prenotazioni = () => {
                         required
                         className="w-full sm:flex-1 min-w-0 p-3 border-2 border-adagio-black/20 rounded-lg focus:border-adagio-green focus:outline-none transition-colors"
                         placeholder={t('bookings.phonePlaceholder')}
-                        pattern="[\d\s\+\-\(\)\.]+"
+                        pattern="[\d\s+\-()\.]+"
                         title="Inserisci un numero di telefono valido"
                       />
                     </div>

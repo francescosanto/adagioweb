@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../translations';
@@ -72,7 +72,7 @@ const Gallery = () => {
     },
   };
 
-  const paginate = (newDirection) => {
+  const paginate = useCallback((newDirection) => {
     setIsChanging(true);
     setDirection(newDirection);
     setCurrentIndex((prevIndex) => {
@@ -85,14 +85,14 @@ const Gallery = () => {
     
     // Rimuovi il blur dopo un breve delay
     setTimeout(() => setIsChanging(false), 150);
-  };
+  }, [images.length]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       paginate(1);
     }, 3000);
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, paginate]);
 
   // Calcola gli indici per le immagini laterali
   const getPreviousIndex = (current) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../translations';
@@ -46,7 +46,7 @@ const ChiSiamo = () => {
     return Math.abs(offset) * velocity;
   };
 
-  const paginate = (newDirection) => {
+  const paginate = useCallback((newDirection) => {
     setDirection(newDirection);
     setCurrentIndex((prevIndex) => {
       if (newDirection === 1) {
@@ -55,14 +55,14 @@ const ChiSiamo = () => {
         return prevIndex === 0 ? images.length - 1 : prevIndex - 1;
       }
     });
-  };
+  }, [images.length]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       paginate(1);
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, paginate]);
 
   return (
     <div className="min-h-screen bg-section-main relative overflow-hidden">
