@@ -24,7 +24,7 @@
 
 ```bash
 # Sostituisci USERNAME con il tuo username GitHub
-git remote add origin https://github.com/USERNAME/adagio-website.git
+git remote add origin https://github.com/adagiosevilla/adagio-website.git
 
 # Rinomina il branch in 'main'
 git branch -M main
