@@ -4,10 +4,10 @@ const path = require('path');
 require('dotenv').config();
 
 // Import delle route API
-const bookingRoutes = require('./backend/routes/bookingRoutes');
-const reviewRoutes = require('./backend/routes/reviewRoutes');
-const newsletterRoutes = require('./backend/routes/newsletterRoutes');
-const availabilityRoutes = require('./backend/routes/availabilityRoutes');
+const bookingRoutes = require('../backend/routes/bookingRoutes');
+const reviewRoutes = require('../backend/routes/reviewRoutes');
+const newsletterRoutes = require('../backend/routes/newsletterRoutes');
+const availabilityRoutes = require('../backend/routes/availabilityRoutes');
 
 const app = express();
 
@@ -71,11 +71,11 @@ app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/availability', availabilityRoutes);
 
 // Serve static files from React build (se presente)
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build')));
 
 // Serve React app for all other routes (SPA routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'), (err) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'), (err) => {
     if (err) {
       // Se il file build non esiste, restituisci un messaggio di benvenuto
       res.status(404).json({
