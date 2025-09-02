@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: adagio-restaurant
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GOOGLE_SHEET_ID
+        sync: false
+      - key: GOOGLE_SHEET_NAME
+        value: Sheet1
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: MAX_CAPACITY
+        value: 50
+      - key: REACT_APP_GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: REACT_APP_NEWSLETTER_SHEET_ID
+        sync: false
+      - key: REACT_APP_NEWSLETTER_SHEET_NAME
+        value: Newsletter

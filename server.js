@@ -34,7 +34,8 @@ const corsOptions = {
       'https://adagiosevilla.github.io',
       'https://adagio-restaurant.netlify.app',
       'https://adagio-restaurant.vercel.app',
-      'https://adagio-restaurant.onrender.com'
+      'https://adagio-restaurant.onrender.com',
+      'https://adagioweb.onrender.com' // Il tuo dominio Render attuale
     ];
     
     if (!origin || allowedOrigins.includes(origin)) {
