@@ -13,4 +13,7 @@ router.get('/emails', newsletterController.getAllEmails);
 // GET /api/newsletter/test-connection - Testa la connessione al foglio newsletter
 router.get('/test-connection', newsletterController.testConnection);
 
+// GET /api/newsletter/debug-env - Debug delle variabili d'ambiente
+router.get('/debug-env', newsletterController.debugEnv);
+
 module.exports = router;
