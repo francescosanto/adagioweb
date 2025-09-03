@@ -25,6 +25,9 @@ services:
         sync: false
       - key: REACT_APP_NEWSLETTER_SHEET_NAME
         value: Newsletter
+      # API Configuration
+      - key: REACT_APP_API_URL
+        value: /api
       # Google Service Account per Google Sheets
       - key: GOOGLE_PROJECT_ID
         value: moonlit-aria-470720-r0

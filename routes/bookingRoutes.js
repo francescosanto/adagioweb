@@ -4,6 +4,9 @@ const { validateBooking } = require('../middleware/validation');
 
 const router = express.Router();
 
+// GET /api/bookings/test-connection - Testa la connessione a Google Sheets
+router.get('/test-connection', bookingController.testConnection);
+
 // GET /api/bookings - Ottiene tutte le prenotazioni
 router.get('/', bookingController.getAllBookings);
 

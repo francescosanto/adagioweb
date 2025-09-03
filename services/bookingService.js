@@ -1,6 +1,16 @@
-const { sheets } = require('../config/googleSheets');
+const { sheets, testConnection } = require('../config/googleSheets');
 
 class BookingService {
+  // Testa la connessione a Google Sheets
+  async testConnection() {
+    try {
+      const result = await testConnection();
+      return result;
+    } catch (error) {
+      console.error('Errore nel test di connessione booking:', error);
+      return { success: false, message: 'Errore nella connessione a Google Sheets' };
+    }
+  }
   // Legge tutte le prenotazioni
   async getAllBookings() {
     try {

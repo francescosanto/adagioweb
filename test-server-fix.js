@@ -51,6 +51,18 @@ async function runTests() {
     {
       url: `${BASE_URL}/api/search-place-id?name=Adagio&location=Sevilla`,
       description: 'Search Place ID'
+    },
+    {
+      url: `${BASE_URL}/api/test-connection`,
+      description: 'Test Connection (Prenotazioni)'
+    },
+    {
+      url: `${BASE_URL}/api/bookings`,
+      description: 'Get Bookings'
+    },
+    {
+      url: `${BASE_URL}/api/bookings/stats`,
+      description: 'Get Booking Stats'
     }
   ];
   

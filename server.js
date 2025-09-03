@@ -74,6 +74,7 @@ app.use('/api/availability', availabilityRoutes);
 app.get('/api/test-place-id', require('./controllers/reviewController').testPlaceId);
 app.get('/api/search-place-id', require('./controllers/reviewController').searchPlaceId);
 app.get('/api/google-reviews', require('./controllers/reviewController').getGoogleReviews);
+app.get('/api/test-connection', require('./controllers/bookingController').testConnection);
 
 // Serve static files from React build (se presente)
 app.use(express.static(path.join(__dirname, 'build')));
