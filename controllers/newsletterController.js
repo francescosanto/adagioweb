@@ -46,7 +46,7 @@ class NewsletterController {
   // GET /api/newsletter/debug-env - Debug delle variabili d'ambiente
   async debugEnv(req, res) {
     try {
-      const envInfo = {
+      const envVars = {
         NEWSLETTER_SHEET_ID: process.env.NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
         NEWSLETTER_SHEET_NAME: process.env.NEWSLETTER_SHEET_NAME || 'Non impostato',
         REACT_APP_NEWSLETTER_SHEET_ID: process.env.REACT_APP_NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
@@ -56,8 +56,8 @@ class NewsletterController {
       
       res.json({
         success: true,
-        message: 'Informazioni variabili d\'ambiente newsletter',
-        data: envInfo
+        message: 'Variabili d\'ambiente newsletter',
+        data: envVars
       });
     } catch (error) {
       console.error('Errore nel controller debugEnv:', error);

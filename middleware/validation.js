@@ -87,8 +87,10 @@ const validateNewsletter = [
   
   body('language')
     .optional()
-    .isIn(['it', 'en', 'es'])
-    .withMessage('Lingua non supportata'),
+    .isLength({ max: 10 })
+    .withMessage('La lingua non può superare i 10 caratteri')
+    .trim()
+    .escape(),
   
   handleValidationErrors
 ];
