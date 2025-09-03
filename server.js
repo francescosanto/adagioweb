@@ -70,6 +70,11 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/availability', availabilityRoutes);
 
+// Endpoint diretti per compatibilità con il frontend
+app.get('/api/test-place-id', require('./controllers/reviewController').testPlaceId);
+app.get('/api/search-place-id', require('./controllers/reviewController').searchPlaceId);
+app.get('/api/google-reviews', require('./controllers/reviewController').getGoogleReviews);
+
 // Serve static files from React build (se presente)
 app.use(express.static(path.join(__dirname, 'build')));
 

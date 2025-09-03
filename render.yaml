@@ -3,8 +3,8 @@ services:
     name: adagio-restaurant
     env: node
     plan: free
-    buildCommand: npm install && npx react-scripts build
-    startCommand: node server.js
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
@@ -25,3 +25,14 @@ services:
         sync: false
       - key: REACT_APP_NEWSLETTER_SHEET_NAME
         value: Newsletter
+      # Google Service Account per Google Sheets
+      - key: GOOGLE_PROJECT_ID
+        value: moonlit-aria-470720-r0
+      - key: GOOGLE_PRIVATE_KEY_ID
+        value: 5402cd7a2d1c537cb8f4f9ebaf25f868b1e885ca
+      - key: GOOGLE_PRIVATE_KEY
+        sync: false
+      - key: GOOGLE_SERVICE_ACCOUNT_EMAIL
+        value: adagio-bookings-service@moonlit-aria-470720-r0.iam.gserviceaccount.com
+      - key: GOOGLE_CLIENT_ID
+        value: "105573878905623232932"
