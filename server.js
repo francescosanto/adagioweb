@@ -3,11 +3,44 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+console.log('🔧 Caricamento dipendenze...');
+
 // Import delle route API
-const bookingRoutes = require('./routes/bookingRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
-const newsletterRoutes = require('./routes/newsletterRoutes');
-const availabilityRoutes = require('./routes/availabilityRoutes');
+let bookingRoutes, reviewRoutes, newsletterRoutes, availabilityRoutes;
+
+try {
+  bookingRoutes = require('./routes/bookingRoutes');
+  console.log('✅ bookingRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento bookingRoutes:', error.message);
+  throw error;
+}
+
+try {
+  reviewRoutes = require('./routes/reviewRoutes');
+  console.log('✅ reviewRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento reviewRoutes:', error.message);
+  throw error;
+}
+
+try {
+  newsletterRoutes = require('./routes/newsletterRoutes');
+  console.log('✅ newsletterRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento newsletterRoutes:', error.message);
+  throw error;
+}
+
+try {
+  availabilityRoutes = require('./routes/availabilityRoutes');
+  console.log('✅ availabilityRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento availabilityRoutes:', error.message);
+  throw error;
+}
+
+console.log('✅ Tutte le dipendenze caricate correttamente');
 
 const app = express();
 
@@ -134,7 +167,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5001;
 
 // Avvio del server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server Adagio avviato sulla porta ${PORT}`);
   console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📊 API disponibili:`);
@@ -146,6 +179,17 @@ app.listen(PORT, () => {
   console.log(`   POST /api/newsletter/subscribe`);
   console.log(`   GET  /api/newsletter/emails`);
   console.log(`🌐 Server disponibile su http://localhost:${PORT}`);
+});
+
+// Gestione errori di avvio
+process.on('uncaughtException', (err) => {
+  console.error('🚨 Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
 });
 
 module.exports = app;
