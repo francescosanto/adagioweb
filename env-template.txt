@@ -1,0 +1,15 @@
+# Google Sheets Configuration
+GOOGLE_SHEET_ID=***
+GOOGLE_SHEET_NAME=Sheet1
+MAX_CAPACITY=50
+
+# Frontend
+PORT=3000
+
+# Backend
+BACKEND_PORT=5001
+
+#API_Places
+REACT_APP_GOOGLE_PLACES_API_KEY=***
+GOOGLE_PLACES_API_KEY=***
+GOOGLE_SERVICE_ACCOUNT_EMAIL=adagio-bookings-service@moonlit-aria-470720-r0.iam.gserviceaccount.com

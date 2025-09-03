@@ -1,19 +1,34 @@
-# Dipendenze
+# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# File di ambiente e credenziali
+# Production build
+build/
+dist/
+
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# File di credenziali Google
-service-account-key.json
-service-account-key_old.json.json
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Logs
 logs
@@ -32,7 +47,6 @@ coverage/
 .nyc_output
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # Optional npm cache directory
@@ -50,17 +64,35 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Service account keys (Google Cloud)
+service-account-key*.json
+*.json.json
+
+# Backup files
+*_BACKUP.md
+*_SETUP.md

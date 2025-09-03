@@ -1,6 +1,20 @@
 const bookingService = require('../services/bookingService');
 
 class BookingController {
+  // GET /api/bookings/test-connection - Testa la connessione a Google Sheets
+  async testConnection(req, res) {
+    try {
+      const result = await bookingService.testConnection();
+      res.json(result);
+    } catch (error) {
+      console.error('Errore nel controller testConnection:', error);
+      res.status(500).json({ 
+        success: false,
+        error: error.message 
+      });
+    }
+  }
+
   // GET /api/bookings - Ottiene tutte le prenotazioni
   async getAllBookings(req, res) {
     try {

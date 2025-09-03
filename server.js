@@ -1,69 +1,64 @@
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const path = require('path');
 require('dotenv').config();
 
-// Debug: Verifica variabili d'ambiente
-console.log('🔧 DEBUG SERVER - Variabili d\'ambiente:');
-console.log('🔑 GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID ? 'Presente' : 'MANCANTE');
-console.log('🔑 GOOGLE_PLACES_API_KEY:', process.env.GOOGLE_PLACES_API_KEY ? 'Presente' : 'MANCANTE');
-console.log('🔑 BACKEND_PORT:', process.env.BACKEND_PORT || 'Default (5001)');
-console.log('🔑 NODE_ENV:', process.env.NODE_ENV || 'development');
+console.log('🔧 Caricamento dipendenze...');
 
-// Import routes
-const bookingRoutes = require('./routes/bookingRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
-const newsletterRoutes = require('./routes/newsletterRoutes');
-const availabilityRoutes = require('./routes/availabilityRoutes');
+// Import delle route API
+let bookingRoutes, reviewRoutes, newsletterRoutes, availabilityRoutes;
+
+try {
+  bookingRoutes = require('./routes/bookingRoutes');
+  console.log('✅ bookingRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento bookingRoutes:', error.message);
+  throw error;
+}
+
+try {
+  reviewRoutes = require('./routes/reviewRoutes');
+  console.log('✅ reviewRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento reviewRoutes:', error.message);
+  throw error;
+}
+
+try {
+  newsletterRoutes = require('./routes/newsletterRoutes');
+  console.log('✅ newsletterRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento newsletterRoutes:', error.message);
+  throw error;
+}
+
+try {
+  availabilityRoutes = require('./routes/availabilityRoutes');
+  console.log('✅ availabilityRoutes caricato');
+} catch (error) {
+  console.error('❌ Errore caricamento availabilityRoutes:', error.message);
+  throw error;
+}
+
+console.log('✅ Tutte le dipendenze caricate correttamente');
 
 const app = express();
 
-// Trust proxy per servizi cloud (Heroku, Render, etc.)
+// Trust proxy per servizi cloud (Render, Heroku, etc.)
 app.set('trust proxy', 1);
 
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'"],
-      connectSrc: ["'self'", "https://maps.googleapis.com", "https://places.googleapis.com"]
-    }
-  }
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minuti
-  max: 100, // limite di 100 richieste per IP ogni 15 minuti
-  message: {
-    success: false,
-    error: 'Troppe richieste, riprova più tardi'
-  },
-  standardHeaders: true,
-  legacyHeaders: false
+// Middleware di logging semplice
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.path} - IP: ${req.ip}`);
+  next();
 });
 
-// Rate limiting più severo per endpoint pubblici
-const publicLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minuti
-  max: 10, // limite di 10 richieste per IP ogni 15 minuti
-  message: {
-    success: false,
-    error: 'Troppe richieste, riprova più tardi'
-  }
-});
-
-// CORS configuration
+// Configurazione CORS per sviluppo e produzione
 const corsOptions = {
   origin: function (origin, callback) {
     // In sviluppo, accetta tutte le origini
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
       return callback(null, true);
     }
     
@@ -72,7 +67,12 @@ const corsOptions = {
       'https://adagiosevilla.github.io',
       'https://adagio-restaurant.netlify.app',
       'https://adagio-restaurant.vercel.app',
+<<<<<<< HEAD
       'https://adagio-restaurant.onrender.com' // Dominio Render
+=======
+      'https://adagio-restaurant.onrender.com',
+      'https://adagioweb.onrender.com' // Il tuo dominio Render attuale
+>>>>>>> 7c356bbd705e41be71500d26b226dfccfeb91d1b
     ];
     
     if (!origin || allowedOrigins.includes(origin)) {
@@ -81,51 +81,72 @@ const corsOptions = {
       callback(new Error('Non consentito da CORS'));
     }
   },
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
 
-// Middleware
-app.use(limiter); // Rate limiting generale
+// Middleware principali
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Health check endpoint (prima delle altre route)
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'Server Adagio funzionante',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    port: process.env.PORT || 5001
   });
 });
 
-// API Routes con rate limiting specifico
-app.use('/api/bookings', publicLimiter, bookingRoutes);
+// API Routes
+app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
-app.use('/api/newsletter', publicLimiter, newsletterRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/availability', availabilityRoutes);
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, '../build')));
+// Endpoint diretti per compatibilità con il frontend
+app.get('/api/test-place-id', require('./controllers/reviewController').testPlaceId);
+app.get('/api/search-place-id', require('./controllers/reviewController').searchPlaceId);
+app.get('/api/google-reviews', require('./controllers/reviewController').getGoogleReviews);
+app.get('/api/test-connection', require('./controllers/bookingController').testConnection);
 
-// Serve React app for all other routes (deve essere l'ultimo)
+// Serve static files from React build (se presente)
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Serve React app for all other routes (SPA routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'), (err) => {
+    if (err) {
+      // Se il file build non esiste, restituisci un messaggio di benvenuto
+      res.status(404).json({
+        success: true,
+        message: 'API Server Adagio - Frontend non ancora deployato',
+        endpoints: {
+          health: '/api/health',
+          bookings: '/api/bookings',
+          reviews: '/api/reviews',
+          newsletter: '/api/newsletter',
+          availability: '/api/availability'
+        }
+      });
+    }
+  });
 });
 
-// 404 handler - deve essere prima del global error handler
-app.use((req, res) => {
+// 404 handler per API non trovate
+app.use('/api/*', (req, res) => {
   res.status(404).json({ 
     success: false,
-    error: 'Endpoint non trovato',
+    error: 'Endpoint API non trovato',
     path: req.path,
     method: req.method
   });
 });
 
-// Global error handler - deve essere l'ultimo middleware
+// Global error handler
 app.use((err, req, res, next) => {
   console.error('🚨 Errore del server:', {
     message: err.message,
@@ -146,10 +167,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.BACKEND_PORT || 5001;
+// Configurazione porta
+const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
+// Avvio del server
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server Adagio avviato sulla porta ${PORT}`);
+  console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📊 API disponibili:`);
   console.log(`   GET  /api/health`);
   console.log(`   GET  /api/bookings`);
@@ -158,7 +182,18 @@ app.listen(PORT, () => {
   console.log(`   GET  /api/reviews`);
   console.log(`   POST /api/newsletter/subscribe`);
   console.log(`   GET  /api/newsletter/emails`);
-  console.log(`🌐 Frontend disponibile su http://localhost:${PORT}`);
+  console.log(`🌐 Server disponibile su http://localhost:${PORT}`);
+});
+
+// Gestione errori di avvio
+process.on('uncaughtException', (err) => {
+  console.error('🚨 Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
 });
 
 module.exports = app;

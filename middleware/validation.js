@@ -42,9 +42,9 @@ const validateBooking = [
   body('phone')
     .notEmpty()
     .withMessage('Il telefono è obbligatorio')
-    .isLength({ min: 9, max: 20 })
-    .withMessage('Il telefono deve essere tra 9 e 20 caratteri')
-    .matches(/^[\+]?[0-9\s\-\(\)]+$/)
+    .isLength({ min: 7, max: 25 })
+    .withMessage('Il telefono deve essere tra 7 e 25 caratteri')
+    .matches(/^[\+]?[0-9\s\-\(\)\.\/]+$/)
     .withMessage('Formato telefono non valido'),
   
   body('email')

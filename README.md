@@ -1,101 +1,77 @@
-# 🍽️ Adagio Backend API
+# 🍽️ Ristorante Adagio - Sito Web
 
-Backend Express.js per il sistema di prenotazioni del ristorante Adagio.
+Sito web ufficiale del Ristorante Adagio, un elegante ristorante italiano che offre un'esperienza culinaria di alta qualità.
 
-## 🚀 Avvio Rapido
+## ✨ Caratteristiche
 
-### 1. Installazione Dipendenze
+- **Design Responsive**: Ottimizzato per tutti i dispositivi
+- **Prenotazioni Online**: Sistema di prenotazione integrato
+- **Galleria Foto**: Mostra dell'ambiente e dei piatti
+- **Recensioni**: Integrazione con Google Places e TripAdvisor
+- **Multilingua**: Supporto per italiano e inglese
+- **Newsletter**: Sistema di iscrizione per aggiornamenti
+
+## 🚀 Tecnologie Utilizzate
+
+- **Frontend**: React.js, Tailwind CSS, Framer Motion
+- **Backend**: Node.js, Express
+- **Integrazioni**: Google Places API, Google Sheets, TripAdvisor
+- **Deploy**: GitHub Pages
+
+## 📱 Sezioni del Sito
+
+- **Home**: Video di presentazione e informazioni principali
+- **Chi Siamo**: Storia e filosofia del ristorante
+- **Menu**: Piatti e specialità
+- **Galleria**: Foto dell'ambiente e dei piatti
+- **Prenotazioni**: Sistema di prenotazione online
+- **Recensioni**: Feedback dei clienti
+- **Contatti**: Informazioni e mappa
+
+## 🛠️ Installazione e Sviluppo
+
+### Prerequisiti
+- Node.js (versione 14 o superiore)
+- npm o yarn
+
+### Installazione
 ```bash
+# Clona il repository
+git clone https://github.com/adagiosevilla/adagio-website.git
+
+# Installa le dipendenze
 npm install
-```
 
-### 2. Configurazione Variabili d'Ambiente
-Copia il file `env.example` in `.env` e configura le variabili:
-
-```bash
-cp env.example .env
-```
-
-### 3. Avvio del Server
-```bash
-# Sviluppo (con auto-reload)
+# Avvia il server di sviluppo
 npm run dev
-
-# Produzione
-npm start
 ```
 
-Il server sarà disponibile su `http://localhost:5001`
+### Script Disponibili
+- `npm start` - Avvia l'applicazione React
+- `npm run build` - Builda l'applicazione per la produzione
+- `npm run server` - Avvia il server backend
+- `npm run dev` - Avvia sia frontend che backend in modalità sviluppo
 
-## 📊 API Endpoints
+## 🌐 Deploy
 
-### Prenotazioni
-- `GET /api/bookings` - Ottiene tutte le prenotazioni
-- `POST /api/bookings` - Crea una nuova prenotazione
-- `GET /api/bookings/stats` - Statistiche prenotazioni
+Il sito è configurato per essere deployato su GitHub Pages. Dopo ogni push al branch principale, il sito viene automaticamente aggiornato.
 
-### Disponibilità
-- `GET /api/availability/:date` - Verifica disponibilità per data
-- `GET /api/availability/:date/:time` - Verifica orario specifico
+## 📧 Configurazione
 
-### Recensioni
-- `GET /api/reviews` - Recensioni Google Places
-- `GET /api/reviews/test-place-id` - Testa Place ID
-- `GET /api/reviews/search-place-id` - Cerca nuovo Place ID
+Per utilizzare tutte le funzionalità, è necessario configurare le seguenti variabili d'ambiente:
 
-### Newsletter
-- `POST /api/newsletter/subscribe` - Iscrizione newsletter
-- `GET /api/newsletter/emails` - Lista email iscritte
-- `GET /api/newsletter/test-connection` - Test connessione
+- `GOOGLE_PLACES_API_KEY` - Chiave API per Google Places
+- `GOOGLE_SHEETS_CREDENTIALS` - Credenziali per Google Sheets
+- `TRIPADVISOR_API_KEY` - Chiave API per TripAdvisor
 
-### Sistema
-- `GET /api/health` - Health check
+## 🤝 Contributi
 
-## 🏗️ Struttura del Progetto
+Questo progetto è mantenuto dal team del Ristorante Adagio. Per contributi o segnalazioni di bug, contattare il team di sviluppo.
 
-```
-backend/
-├── config/          # Configurazioni (Google Sheets, Places API)
-├── controllers/     # Logica di controllo delle richieste
-├── routes/          # Definizione delle route
-├── services/        # Logica business e integrazioni
-├── middleware/      # Middleware personalizzati
-├── utils/           # Utility e helper
-├── server.js        # File principale del server
-└── package.json     # Dipendenze e script
-```
+## 📄 Licenza
 
-## 🔧 Configurazione
+© 2025 Ristorante Adagio. Tutti i diritti riservati.
 
-### Google Sheets
-- Configura `GOOGLE_SHEET_ID` e `GOOGLE_SHEET_NAME`
-- Assicurati che il file `service-account-key.json` sia presente nella root del progetto
+---
 
-### Google Places API
-- Configura `GOOGLE_PLACES_API_KEY`
-- Il `PLACE_ID` è hardcoded per Adagio Sevilla
-
-### Newsletter
-- Configura `REACT_APP_NEWSLETTER_SHEET_ID` e `REACT_APP_NEWSLETTER_SHEET_NAME`
-
-## 🧪 Test
-
-Per testare le API, puoi usare:
-
-```bash
-# Health check
-curl http://localhost:5001/api/health
-
-# Test connessione Google Sheets
-curl http://localhost:5001/api/bookings
-
-# Test recensioni
-curl http://localhost:5001/api/reviews
-```
-
-## 📝 Note
-
-- Il server serve anche i file statici del frontend React
-- Tutte le route non-API vengono reindirizzate al frontend
-- CORS è abilitato per tutte le origini
-- Gestione errori centralizzata
+**Ristorante Adagio** - Dove la tradizione incontra l'innovazione 🍷

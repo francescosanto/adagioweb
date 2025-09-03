@@ -1,6 +1,17 @@
-const { sheets } = require('../config/googleSheets');
+const { sheets, testConnection } = require('../config/googleSheets');
+const newsletterService = require('./newsletterService');
 
 class BookingService {
+  // Testa la connessione a Google Sheets
+  async testConnection() {
+    try {
+      const result = await testConnection();
+      return result;
+    } catch (error) {
+      console.error('Errore nel test di connessione booking:', error);
+      return { success: false, message: 'Errore nella connessione a Google Sheets' };
+    }
+  }
   // Legge tutte le prenotazioni
   async getAllBookings() {
     try {
@@ -45,12 +56,16 @@ class BookingService {
         throw new Error('Campi obbligatori mancanti');
       }
 
+      // Formatta il numero di telefono per evitare errori su Google Sheets
+      // Rimuove caratteri che potrebbero causare problemi e forza il formato testo
+      const formattedPhone = phone.toString().trim();
+      
       const values = [
         [
           date,
           time,
           name,
-          `'${phone}`, // Aggiunge apostrofo per forzare il testo in Google Sheets
+          `="${formattedPhone}"`, // Usa formula per forzare il testo e evitare interpretazioni errate
           email || '',
           guests.toString(),
           notes || '',
@@ -66,6 +81,30 @@ class BookingService {
         insertDataOption: 'INSERT_ROWS',
         resource: { values },
       });
+
+      // Se è stata fornita un'email, aggiungila automaticamente alla newsletter
+      if (email && email.trim()) {
+        try {
+          console.log(`Tentativo di aggiunta email ${email} alla newsletter...`);
+          console.log('Variabili ambiente newsletter:', {
+            NEWSLETTER_SHEET_ID: process.env.NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
+            NEWSLETTER_SHEET_NAME: process.env.NEWSLETTER_SHEET_NAME || 'Non impostato'
+          });
+          
+          await newsletterService.subscribeEmail({
+            email: email.trim(),
+            source: 'Prenotazione',
+            language: 'it'
+          });
+          console.log(`✅ Email ${email} aggiunta automaticamente alla newsletter dalla prenotazione`);
+        } catch (newsletterError) {
+          // Non bloccare la prenotazione se l'aggiunta alla newsletter fallisce
+          console.error('❌ Errore nell\'aggiunta automatica alla newsletter:', newsletterError.message);
+          console.error('Dettagli errore:', newsletterError);
+        }
+      } else {
+        console.log('Nessuna email fornita nella prenotazione, skip newsletter');
+      }
 
       return { success: true, data: response.data };
     } catch (error) {
