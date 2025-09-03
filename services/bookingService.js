@@ -85,16 +85,25 @@ class BookingService {
       // Se è stata fornita un'email, aggiungila automaticamente alla newsletter
       if (email && email.trim()) {
         try {
+          console.log(`Tentativo di aggiunta email ${email} alla newsletter...`);
+          console.log('Variabili ambiente newsletter:', {
+            NEWSLETTER_SHEET_ID: process.env.NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
+            NEWSLETTER_SHEET_NAME: process.env.NEWSLETTER_SHEET_NAME || 'Non impostato'
+          });
+          
           await newsletterService.subscribeEmail({
             email: email.trim(),
             source: 'Prenotazione',
             language: 'it'
           });
-          console.log(`Email ${email} aggiunta automaticamente alla newsletter dalla prenotazione`);
+          console.log(`✅ Email ${email} aggiunta automaticamente alla newsletter dalla prenotazione`);
         } catch (newsletterError) {
           // Non bloccare la prenotazione se l'aggiunta alla newsletter fallisce
-          console.warn('Errore nell\'aggiunta automatica alla newsletter:', newsletterError.message);
+          console.error('❌ Errore nell\'aggiunta automatica alla newsletter:', newsletterError.message);
+          console.error('Dettagli errore:', newsletterError);
         }
+      } else {
+        console.log('Nessuna email fornita nella prenotazione, skip newsletter');
       }
 
       return { success: true, data: response.data };

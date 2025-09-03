@@ -42,6 +42,31 @@ class NewsletterController {
       });
     }
   }
+
+  // GET /api/newsletter/debug-env - Debug delle variabili d'ambiente
+  async debugEnv(req, res) {
+    try {
+      const envInfo = {
+        NEWSLETTER_SHEET_ID: process.env.NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
+        NEWSLETTER_SHEET_NAME: process.env.NEWSLETTER_SHEET_NAME || 'Non impostato',
+        REACT_APP_NEWSLETTER_SHEET_ID: process.env.REACT_APP_NEWSLETTER_SHEET_ID ? 'Presente' : 'Mancante',
+        REACT_APP_NEWSLETTER_SHEET_NAME: process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Non impostato',
+        NODE_ENV: process.env.NODE_ENV || 'Non impostato'
+      };
+      
+      res.json({
+        success: true,
+        message: 'Informazioni variabili d\'ambiente newsletter',
+        data: envInfo
+      });
+    } catch (error) {
+      console.error('Errore nel controller debugEnv:', error);
+      res.status(500).json({ 
+        success: false,
+        error: error.message 
+      });
+    }
+  }
 }
 
 module.exports = new NewsletterController();
