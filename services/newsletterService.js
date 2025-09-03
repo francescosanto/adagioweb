@@ -14,8 +14,8 @@ class NewsletterService {
       // Verifica se l'email esiste già
       try {
         const existingEmailsResponse = await sheets.spreadsheets.values.get({
-          spreadsheetId: process.env.NEWSLETTER_SHEET_ID,
-          range: `${process.env.NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:A`,
+          spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
+          range: `${process.env.NEWSLETTER_SHEET_NAME || process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:A`,
         });
 
         const rows = existingEmailsResponse.data.values || [];
@@ -39,8 +39,8 @@ class NewsletterService {
       ];
 
       const response = await sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.NEWSLETTER_SHEET_ID,
-        range: `${process.env.NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:D`,
+        spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
+        range: `${process.env.NEWSLETTER_SHEET_NAME || process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:D`,
         valueInputOption: 'USER_ENTERED',
         insertDataOption: 'INSERT_ROWS',
         resource: { values },
@@ -61,8 +61,8 @@ class NewsletterService {
   async getAllEmails() {
     try {
       const response = await sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.NEWSLETTER_SHEET_ID,
-        range: `${process.env.NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:D`,
+        spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
+        range: `${process.env.NEWSLETTER_SHEET_NAME || process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:D`,
       });
 
       const rows = response.data.values || [];
@@ -90,7 +90,7 @@ class NewsletterService {
   async testConnection() {
     try {
       await sheets.spreadsheets.get({
-        spreadsheetId: process.env.NEWSLETTER_SHEET_ID,
+        spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
       });
       return { 
         success: true, 
