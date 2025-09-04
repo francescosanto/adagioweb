@@ -5,7 +5,7 @@ import { useLanguage } from '../translations';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   // Stato per la newsletter
   const [email, setEmail] = useState('');
@@ -35,7 +35,7 @@ const Footer = () => {
         body: JSON.stringify({
           email: email.trim(),
           source: 'Website',
-          language: t('common.language') || 'it'
+          language: language || 'it'
         }),
       });
 

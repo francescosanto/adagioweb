@@ -60,9 +60,25 @@ class BookingService {
       // Rimuove caratteri che potrebbero causare problemi e forza il formato testo
       const formattedPhone = phone.toString().trim();
       
+      // Converte la data da DD-MM-YYYY a formato leggibile per Google Sheets
+      const [day, month, year] = date.split('-');
+      const formattedDate = `${day}/${month}/${year}`;
+      
+      // Crea timestamp in formato locale italiano (UTC+1)
+      const now = new Date();
+      const italianTime = new Date(now.getTime() + (2 * 60 * 60 * 1000)); // Aggiunge 2 ore per l'ora italiana
+      const formattedTimestamp = italianTime.toLocaleString('it-IT', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+
       const values = [
         [
-          date,
+          `="${formattedDate}"`, // Usa formula per forzare il testo e evitare interpretazione come numero
           time,
           name,
           `="${formattedPhone}"`, // Usa formula per forzare il testo e evitare interpretazioni errate
@@ -70,7 +86,7 @@ class BookingService {
           guests.toString(),
           notes || '',
           'Pendente',
-          new Date().toISOString(),
+          formattedTimestamp,
         ],
       ];
 

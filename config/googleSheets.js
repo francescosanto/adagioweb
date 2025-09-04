@@ -22,11 +22,7 @@ if (process.env.GOOGLE_PRIVATE_KEY) {
 } else {
   // Usa il file JSON (per sviluppo locale)
   auth = new google.auth.GoogleAuth({
-<<<<<<< HEAD
-    keyFile: path.join(__dirname, '../../service-account-key.json'),
-=======
     keyFile: path.join(__dirname, '../service-account-key.json'),
->>>>>>> 7c356bbd705e41be71500d26b226dfccfeb91d1b
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 }

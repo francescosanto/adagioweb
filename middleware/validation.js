@@ -50,8 +50,7 @@ const validateBooking = [
   body('email')
     .optional()
     .isEmail()
-    .withMessage('Formato email non valido')
-    .normalizeEmail(),
+    .withMessage('Formato email non valido'),
   
   body('guests')
     .notEmpty()
@@ -75,8 +74,7 @@ const validateNewsletter = [
     .notEmpty()
     .withMessage('L\'email è obbligatoria')
     .isEmail()
-    .withMessage('Formato email non valido')
-    .normalizeEmail(),
+    .withMessage('Formato email non valido'),
   
   body('source')
     .optional()

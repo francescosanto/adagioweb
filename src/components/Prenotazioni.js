@@ -12,7 +12,7 @@ const Prenotazioni = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedCountry, setSelectedCountry] = useState({
-    name: 'Spagna',
+    name: 'Spain',
     code: 'ES',
     phone: '+34',
     flag: '🇪🇸'
@@ -278,12 +278,8 @@ const Prenotazioni = () => {
           </div>
         );
       case 'connected':
-        return (
-          <div className="flex items-center gap-2 text-green-600">
-            <Server className="w-4 h-4" />
-            {t('bookings.connected')}
-          </div>
-        );
+        // Non mostrare nulla quando la connessione è OK
+        return null;
       case 'error':
         return (
           <div className="flex items-center gap-2 text-red-600">
@@ -364,14 +360,6 @@ const Prenotazioni = () => {
               </button>
             </div>
 
-            <button
-              onClick={syncBookings}
-              disabled={loading || connectionStatus !== 'connected'}
-              className="flex items-center gap-2 px-4 py-2 bg-adagio-green hover:bg-adagio-green-dark text-adagio-cream rounded-lg transition-colors disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              {loading ? t('bookings.synchronizing') : t('bookings.update')}
-            </button>
           </motion.div>
 
           {error && (

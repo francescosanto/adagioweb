@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, getDay } from 'date-fns';
-import { it } from 'date-fns/locale';
 import { api } from '../config/api';
 import { config } from '../config/config';
+import { useLanguage } from '../translations';
 
 export const useBookings = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -11,11 +11,44 @@ export const useBookings = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('checking');
+  const { t, language } = useLanguage();
 
   // Funzione per verificare se un giorno è chiuso
   const isDayClosed = (date) => {
     const dayOfWeek = getDay(date); // 0 = Domenica, 1 = Lunedì, 2 = Martedì, ecc.
     return config.closedDays.includes(dayOfWeek);
+  };
+
+  // Funzione per ottenere il nome del mese tradotto
+  const getMonthName = (date) => {
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthIndex = date.getMonth();
+    const monthKey = monthNames[monthIndex];
+    const year = date.getFullYear();
+    return `${t(`calendar.months.${monthKey}`)} ${year}`;
+  };
+
+  // Funzione per ottenere i giorni della settimana tradotti
+  const getWeekDays = () => {
+    const days = {
+      es: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+      en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      it: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
+    };
+    return days[language] || days.es;
+  };
+
+  // Funzione per ottenere il nome del giorno tradotto
+  const getDayName = (date) => {
+    const dayNames = [
+      'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
+    ];
+    const dayIndex = date.getDay();
+    const dayKey = dayNames[dayIndex];
+    return t(`calendar.weekdays.${dayKey}`);
   };
 
   // Testa la connessione a Google Sheets tramite API
@@ -136,7 +169,7 @@ export const useBookings = () => {
       dateStr: format(day, 'dd/MM/yyyy'),
       isCurrentMonth: isSameMonth(day, currentMonth),
       isToday: isSameDay(day, new Date()),
-      dayName: format(day, 'EEE', { locale: it }),
+      dayName: getDayName(day),
       dayNumber: day.getDate(),
       isClosed: isDayClosed(day)
     }));
@@ -161,7 +194,8 @@ export const useBookings = () => {
     changeMonth,
     generateMonthDates,
     reconnect,
-    monthName: format(currentMonth, 'MMMM yyyy', { locale: it }),
+    monthName: getMonthName(currentMonth),
+    getWeekDays,
     isDayClosed
   };
 };
