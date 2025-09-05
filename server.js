@@ -57,8 +57,12 @@ app.use((req, res, next) => {
 // Configurazione CORS per sviluppo e produzione
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log('🔧 DEBUG CORS - Origin ricevuto:', origin);
+    console.log('🔧 DEBUG CORS - NODE_ENV:', process.env.NODE_ENV);
+    
     // In sviluppo, accetta tutte le origini
     if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      console.log('✅ DEBUG CORS - Modalità sviluppo, accetto tutte le origini');
       return callback(null, true);
     }
     
@@ -68,21 +72,42 @@ const corsOptions = {
       'https://adagio-restaurant.netlify.app',
       'https://adagio-restaurant.vercel.app',
       'https://adagio-restaurant.onrender.com',
-      'https://adagioweb.onrender.com' // Il tuo dominio Render attuale
+      'https://adagioweb.onrender.com',
+      'https://www.adagiosevilla.com', // Il tuo dominio attuale
+      'https://adagiosevilla.com' // Senza www
     ];
     
+    console.log('🔧 DEBUG CORS - Origini consentite:', allowedOrigins);
+    
+    // Se non c'è origin (richieste da server, Postman, etc.) o è nella lista, accetta
     if (!origin || allowedOrigins.includes(origin)) {
+      console.log('✅ DEBUG CORS - Origin consentito:', origin);
       callback(null, true);
     } else {
+      console.log('❌ DEBUG CORS - Origin NON consentito:', origin);
       callback(new Error('Non consentito da CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 // Middleware principali
 app.use(cors(corsOptions));
+
+// Fallback CORS più permissivo per debug
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 

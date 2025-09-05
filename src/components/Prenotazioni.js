@@ -615,7 +615,7 @@ const Prenotazioni = () => {
                         required
                         className="w-full sm:flex-1 min-w-0 p-3 border-2 border-adagio-black/20 rounded-lg focus:border-adagio-green focus:outline-none transition-colors"
                         placeholder={t('bookings.phonePlaceholder')}
-                        pattern="[\\d\\s+\\-()\\.]+"
+                        pattern="[0-9\\s+\\-()\\.]+"
                         title="Inserisci un numero di telefono valido"
                       />
                     </div>
