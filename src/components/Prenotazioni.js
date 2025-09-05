@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, User, Phone, Mail, ChevronLeft, ChevronRight, RefreshCw, WifiOff, Server, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, ChevronLeft, ChevronRight, RefreshCw, WifiOff, CheckCircle, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { useBookings } from '../hooks/useBookings';
@@ -48,7 +48,6 @@ const Prenotazioni = () => {
     loading,
     error,
     connectionStatus,
-    syncBookings,
     createBooking,
     changeMonth,
     generateMonthDates,
