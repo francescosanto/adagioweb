@@ -109,6 +109,17 @@ app.get('/api/search-place-id', require('./controllers/reviewController').search
 app.get('/api/google-reviews', require('./controllers/reviewController').getGoogleReviews);
 app.get('/api/test-connection', require('./controllers/bookingController').testConnection);
 
+// 404 handler per API non trovate (DEVE essere prima della route *)
+app.use('/api/*', (req, res) => {
+  console.log(`🚨 API non trovata: ${req.method} ${req.path}`);
+  res.status(404).json({ 
+    success: false,
+    error: 'Endpoint API non trovato',
+    path: req.path,
+    method: req.method
+  });
+});
+
 // Serve static files from React build (se presente)
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -129,16 +140,6 @@ app.get('*', (req, res) => {
         }
       });
     }
-  });
-});
-
-// 404 handler per API non trovate
-app.use('/api/*', (req, res) => {
-  res.status(404).json({ 
-    success: false,
-    error: 'Endpoint API non trovato',
-    path: req.path,
-    method: req.method
   });
 });
 
