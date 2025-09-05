@@ -266,6 +266,19 @@ const Prenotazioni = () => {
   // Genera le date per il mese corrente
   const monthDates = generateMonthDates();
 
+  // Test di connessione al server
+  const testServerConnection = async () => {
+    try {
+      const response = await fetch('/api/health');
+      const data = await response.json();
+      console.log('🔧 DEBUG Server Health Check:', data);
+      return data.status === 'OK';
+    } catch (error) {
+      console.error('❌ DEBUG Server Health Check Failed:', error);
+      return false;
+    }
+  };
+
   // Renderizza il messaggio di stato connessione
   const renderConnectionStatus = () => {
     switch (connectionStatus) {
@@ -277,8 +290,12 @@ const Prenotazioni = () => {
           </div>
         );
       case 'connected':
-        // Non mostrare nulla quando la connessione è OK
-        return null;
+        return (
+          <div className="flex items-center gap-2 text-green-600">
+            <CheckCircle className="w-4 h-4" />
+            Server connesso e funzionante
+          </div>
+        );
       case 'error':
         return (
           <div className="flex items-center gap-2 text-red-600">
@@ -327,9 +344,15 @@ const Prenotazioni = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-6 flex justify-center"
+            className="mb-6 flex flex-col items-center gap-4"
           >
             {renderConnectionStatus()}
+            <button
+              onClick={testServerConnection}
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
+            >
+              Test Server
+            </button>
           </motion.div>
 
           {/* Status e controlli */}
@@ -592,7 +615,7 @@ const Prenotazioni = () => {
                         required
                         className="w-full sm:flex-1 min-w-0 p-3 border-2 border-adagio-black/20 rounded-lg focus:border-adagio-green focus:outline-none transition-colors"
                         placeholder={t('bookings.phonePlaceholder')}
-                        pattern="[\d\s+\-()\.]+"
+                        pattern="[\\d\\s+\\-()\\.]+"
                         title="Inserisci un numero di telefono valido"
                       />
                     </div>

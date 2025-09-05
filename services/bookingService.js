@@ -49,10 +49,24 @@ class BookingService {
   // Aggiunge una nuova prenotazione
   async createBooking(bookingData) {
     try {
+      console.log('🔧 DEBUG bookingService.createBooking - Dati ricevuti:', JSON.stringify(bookingData, null, 2));
+      console.log('🔧 DEBUG bookingService.createBooking - Variabili ambiente:', {
+        GOOGLE_SHEET_ID: process.env.GOOGLE_SHEET_ID ? 'Presente' : 'Mancante',
+        GOOGLE_SHEET_NAME: process.env.GOOGLE_SHEET_NAME || 'Non impostato',
+        NODE_ENV: process.env.NODE_ENV || 'Non impostato'
+      });
+      
       const { date, time, name, phone, email, guests, notes } = bookingData;
 
       // Validazione base
       if (!date || !time || !name || !phone || !guests) {
+        console.error('❌ DEBUG bookingService.createBooking - Validazione fallita:', {
+          date: !!date,
+          time: !!time,
+          name: !!name,
+          phone: !!phone,
+          guests: !!guests
+        });
         throw new Error('Campi obbligatori mancanti');
       }
 
