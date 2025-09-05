@@ -266,18 +266,18 @@ const Prenotazioni = () => {
   // Genera le date per il mese corrente
   const monthDates = generateMonthDates();
 
-  // Test di connessione al server
-  const testServerConnection = async () => {
-    try {
-      const response = await fetch('/api/health');
-      const data = await response.json();
-      console.log('🔧 DEBUG Server Health Check:', data);
-      return data.status === 'OK';
-    } catch (error) {
-      console.error('❌ DEBUG Server Health Check Failed:', error);
-      return false;
-    }
-  };
+  // Test di connessione al server (DEBUG - commentato per produzione)
+  // const testServerConnection = async () => {
+  //   try {
+  //     const response = await fetch('/api/health');
+  //     const data = await response.json();
+  //     console.log('🔧 DEBUG Server Health Check:', data);
+  //     return data.status === 'OK';
+  //   } catch (error) {
+  //     console.error('❌ DEBUG Server Health Check Failed:', error);
+  //     return false;
+  //   }
+  // };
 
   // Renderizza il messaggio di stato connessione
   const renderConnectionStatus = () => {
@@ -290,12 +290,14 @@ const Prenotazioni = () => {
           </div>
         );
       case 'connected':
-        return (
-          <div className="flex items-center gap-2 text-green-600">
-            <CheckCircle className="w-4 h-4" />
-            Server connesso e funzionante
-          </div>
-        );
+        // Non mostrare nulla quando la connessione è OK (DEBUG commentato)
+        // return (
+        //   <div className="flex items-center gap-2 text-green-600">
+        //     <CheckCircle className="w-4 h-4" />
+        //     Server connesso e funzionante
+        //   </div>
+        // );
+        return null;
       case 'error':
         return (
           <div className="flex items-center gap-2 text-red-600">
@@ -344,15 +346,16 @@ const Prenotazioni = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-6 flex flex-col items-center gap-4"
+            className="mb-6 flex justify-center"
           >
             {renderConnectionStatus()}
-            <button
+            {/* DEBUG - Pulsante test server commentato per produzione */}
+            {/* <button
               onClick={testServerConnection}
               className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
             >
               Test Server
-            </button>
+            </button> */}
           </motion.div>
 
           {/* Status e controlli */}
