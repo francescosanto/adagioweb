@@ -95,6 +95,9 @@
     "newsletterDescription": "Receive our special offers, events and culinary news",
     "emailPlaceholder": "Your email",
     "subscribe": "Subscribe",
+    "newsletterSuccess": "Thank you! You have successfully subscribed to the newsletter.",
+    "newsletterDuplicate": "This email is already registered in the newsletter.",
+    "newsletterError": "Error during subscription. Please try again.",
     "copyright": "© {{year}} Adagio Restaurant. All rights reserved.",
     "madeWith": "Website made with ❤️ for Italian culinary tradition"
   },

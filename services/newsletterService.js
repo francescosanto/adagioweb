@@ -12,20 +12,21 @@ class NewsletterService {
       }
 
       // Verifica se l'email esiste già
-      try {
-        const existingEmailsResponse = await sheets.spreadsheets.values.get({
-          spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
-          range: `${process.env.NEWSLETTER_SHEET_NAME || process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:A`,
-        });
+      const existingEmailsResponse = await sheets.spreadsheets.values.get({
+        spreadsheetId: process.env.NEWSLETTER_SHEET_ID || process.env.REACT_APP_NEWSLETTER_SHEET_ID,
+        range: `${process.env.NEWSLETTER_SHEET_NAME || process.env.REACT_APP_NEWSLETTER_SHEET_NAME || 'Newsletter'}!A:A`,
+      });
 
-        const rows = existingEmailsResponse.data.values || [];
-        const existingEmails = rows.slice(1).map(row => row[0]?.toLowerCase().trim());
-        
-        if (existingEmails.includes(email.toLowerCase().trim())) {
-          throw new Error('Email già registrata alla newsletter');
-        }
-      } catch (error) {
-        console.log('Errore nel controllo email esistente (continua comunque):', error);
+      const rows = existingEmailsResponse.data.values || [];
+      const existingEmails = rows.slice(1).map(row => row[0]?.toLowerCase().trim());
+      
+      if (existingEmails.includes(email.toLowerCase().trim())) {
+        console.log(`Email ${email} già presente nella newsletter, skip aggiunta`);
+        return { 
+          success: true, 
+          message: 'Email già registrata alla newsletter',
+          duplicate: true
+        };
       }
 
       // Aggiungi l'email al foglio

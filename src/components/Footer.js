@@ -42,11 +42,16 @@ const Footer = () => {
       const data = await response.json();
 
       if (data.success) {
-        setMessage('Grazie! Ti sei iscritto alla newsletter con successo.');
-        setMessageType('success');
+        if (data.duplicate) {
+          setMessage(t('footer.newsletterDuplicate'));
+          setMessageType('success');
+        } else {
+          setMessage(t('footer.newsletterSuccess'));
+          setMessageType('success');
+        }
         setEmail('');
       } else {
-        setMessage(data.error || 'Errore durante l\'iscrizione. Riprova.');
+        setMessage(data.error || t('footer.newsletterError'));
         setMessageType('error');
       }
     } catch (error) {

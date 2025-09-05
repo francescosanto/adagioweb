@@ -5,6 +5,16 @@ class NewsletterController {
   async subscribeEmail(req, res) {
     try {
       const result = await newsletterService.subscribeEmail(req.body);
+      
+      // Se è un duplicato, restituisci 200 con messaggio informativo
+      if (result.duplicate) {
+        return res.status(200).json({
+          success: true,
+          message: 'Email già registrata alla newsletter',
+          duplicate: true
+        });
+      }
+      
       res.json(result);
     } catch (error) {
       console.error('Errore nel controller subscribeEmail:', error);

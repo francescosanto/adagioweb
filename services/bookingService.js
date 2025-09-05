@@ -121,12 +121,17 @@ class BookingService {
             NEWSLETTER_SHEET_NAME: process.env.NEWSLETTER_SHEET_NAME || 'Non impostato'
           });
           
-          await newsletterService.subscribeEmail({
+          const newsletterResult = await newsletterService.subscribeEmail({
             email: email.trim(),
             source: 'Prenotazione',
             language: 'it'
           });
-          console.log(`✅ Email ${email} aggiunta automaticamente alla newsletter dalla prenotazione`);
+          
+          if (newsletterResult.duplicate) {
+            console.log(`ℹ️ Email ${email} già presente nella newsletter, skip aggiunta`);
+          } else {
+            console.log(`✅ Email ${email} aggiunta automaticamente alla newsletter dalla prenotazione`);
+          }
         } catch (newsletterError) {
           // Non bloccare la prenotazione se l'aggiunta alla newsletter fallisce
           console.error('❌ Errore nell\'aggiunta automatica alla newsletter:', newsletterError.message);

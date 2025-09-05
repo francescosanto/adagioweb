@@ -95,6 +95,9 @@
     "newsletterDescription": "Recibe nuestras ofertas especiales, eventos y novedades culinarias",
     "emailPlaceholder": "Tu email",
     "subscribe": "Suscribirse",
+    "newsletterSuccess": "¡Gracias! Te has suscrito a la newsletter con éxito.",
+    "newsletterDuplicate": "Este email ya está registrado en la newsletter.",
+    "newsletterError": "Error durante la suscripción. Inténtalo de nuevo.",
     "copyright": "© {{year}} Restaurante Adagio. Todos los derechos reservados.",
     "madeWith": "Sitio web realizado con ❤️ para la tradición culinaria italiana"
   },
