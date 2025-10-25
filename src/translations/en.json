@@ -41,7 +41,7 @@
     "notesPlaceholder": "Allergies, special requests, special occasions...",
     "confirmBooking": "Confirm Booking",
     "sending": "Sending...",
-    "bookingConfirmed": "Booking confirmed!",
+    "bookingConfirmed": "Your booking has been taken care of, you will be contacted shortly for confirmation.",
     "selectDateAndTimeAlert": "Select a date and time",
     "pastDateAlert": "You cannot book for a past date",
     "closedDayAlert": "You cannot book for a day when the restaurant is closed",

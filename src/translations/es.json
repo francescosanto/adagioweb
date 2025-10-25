@@ -41,7 +41,7 @@
     "notesPlaceholder": "Alergias, peticiones especiales, ocasiones particulares...",
     "confirmBooking": "Confirmar Reserva",
     "sending": "Enviando...",
-    "bookingConfirmed": "¡Reserva confirmada!",
+    "bookingConfirmed": "Tu reserva ha sido tomada en cuenta, serás contactado en breve para la confirmación.",
     "selectDateAndTimeAlert": "Selecciona una fecha y una hora",
     "pastDateAlert": "No puedes reservar para una fecha pasada",
     "closedDayAlert": "No puedes reservar para un día en que el local está cerrado",
